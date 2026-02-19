@@ -68,14 +68,9 @@ def write_cagr_config(cagr: float, horizon: int):
 
 app = FastAPI(title="Revenue Forecasting API", version="1.0.0")
 
-origins = [
-    "http://localhost:3000",  # local dev
-    "https://kuppam-carbon-dashboard.vercel.app"
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

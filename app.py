@@ -70,7 +70,7 @@ app = FastAPI(title="Revenue Forecasting API", version="1.0.0")
 
 origins = [
     "http://localhost:3000",  # local dev
-    "https://kuppam-carbon-dashboard-22e7rdxbn-thesuneet7s-projects.vercel.app"
+    "https://kuppam-carbon-dashboard.vercel.app"
 ]
 
 app.add_middleware(

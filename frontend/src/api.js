@@ -1,25 +1,25 @@
 const BASE = import.meta.env.VITE_API_URL;
 
 export async function getHistorical() {
-    const res = await fetch(`${BASE}/historical`);
+    const res = await fetch(`${BASE}/api/historical`);
     if (!res.ok) throw new Error(`Historical fetch failed: ${res.status}`);
     return res.json();
 }
 
 export async function getForecast() {
-    const res = await fetch(`${BASE}/forecast`);
+    const res = await fetch(`${BASE}/api/forecast`);
     if (!res.ok) throw new Error(`Forecast fetch failed: ${res.status}`);
     return res.json();
 }
 
 export async function getCagr() {
-    const res = await fetch(`${BASE}/cagr`);
+    const res = await fetch(`${BASE}/api/cagr`);
     if (!res.ok) throw new Error(`CAGR fetch failed: ${res.status}`);
     return res.json();
 }
 
 export async function updateCagr(cagr, horizon) {
-    const res = await fetch(`${BASE}/cagr`, {
+    const res = await fetch(`${BASE}/api/cagr`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cagr, horizon }),
@@ -29,7 +29,7 @@ export async function updateCagr(cagr, horizon) {
 }
 
 export async function runForecast(cagr, horizon) {
-    const res = await fetch(`${BASE}/run-forecast`, {
+    const res = await fetch(`${BASE}/api/run-forecast`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cagr, horizon }),
@@ -39,7 +39,7 @@ export async function runForecast(cagr, horizon) {
 }
 
 export async function refreshData() {
-    const res = await fetch(`${BASE}/refresh`, { method: 'POST' });
+    const res = await fetch(`${BASE}/api/refresh`, { method: 'POST' });
     if (!res.ok) throw new Error(`Refresh failed: ${res.status}`);
     return res.json();
 }
@@ -48,7 +48,7 @@ export async function uploadFile(file, { target = 'historical', user = 'user', a
     const formData = new FormData();
     formData.append('file', file);
     const params = new URLSearchParams({ target, user, apply_cleaning: applyCleaning, cleaning_strategy: cleaningStrategy });
-    const res = await fetch(`${BASE}/upload?${params}`, { method: 'POST', body: formData });
+    const res = await fetch(`${BASE}/api/upload?${params}`, { method: 'POST', body: formData });
     if (!res.ok) {
         const err = await res.json().catch(() => ({ detail: res.statusText }));
         throw new Error(err.detail || `Upload failed: ${res.status}`);
@@ -57,13 +57,13 @@ export async function uploadFile(file, { target = 'historical', user = 'user', a
 }
 
 export async function getDataQuality() {
-    const res = await fetch(`${BASE}/data-quality`);
+    const res = await fetch(`${BASE}/api/data-quality`);
     if (!res.ok) throw new Error(`Data quality fetch failed: ${res.status}`);
     return res.json();
 }
 
 export async function cleanData(strategy = 'median', apply = false) {
-    const res = await fetch(`${BASE}/clean`, {
+    const res = await fetch(`${BASE}/api/clean`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ strategy, apply }),
@@ -75,7 +75,7 @@ export async function cleanData(strategy = 'median', apply = false) {
 export async function getAuditLogs(page = 1, pageSize = 50, action = null) {
     const params = new URLSearchParams({ page, page_size: pageSize });
     if (action) params.append('action', action);
-    const res = await fetch(`${BASE}/audit-logs?${params}`);
+    const res = await fetch(`${BASE}/api/audit-logs?${params}`);
     if (!res.ok) throw new Error(`Audit logs fetch failed: ${res.status}`);
     return res.json();
 }

@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "timestamp": "2026-02-22T11:06:34.137061+00:00",
+    "action": "manual_refresh",
+    "details": "Historical data reloaded \u2014 132 rows",
+    "user": "system",
+    "status": "success"
+  }
+]

@@ -8,6 +8,8 @@ import CategoryBreakdown from './components/CategoryBreakdown';
 import CategoryPieChart from './components/CategoryPieChart';
 import CagrPanel from './components/CagrPanel';
 import DataTable from './components/DataTable';
+import DataUpload from './components/DataUpload';
+import AuditLogTable from './components/AuditLogTable';
 
 function Toast({ toasts }) {
     return (
@@ -31,6 +33,7 @@ export default function App() {
     const [status, setStatus] = useState('connected');
     const [toasts, setToasts] = useState([]);
     const [activeTab, setActiveTab] = useState('combined');
+    const [mainTab, setMainTab] = useState('dashboard'); // 'dashboard' | 'data'
     const [mode, setMode] = useState('kwh'); // 'kwh' | 'tco2'
 
     const addToast = useCallback((message, type = 'info') => {
@@ -110,6 +113,21 @@ export default function App() {
                     </div>
                 </div>
                 <div className="app-header__actions">
+                    {/* Main nav tabs */}
+                    <div className="mode-toggle">
+                        <button
+                            className={`mode-toggle__btn ${mainTab === 'dashboard' ? 'mode-toggle__btn--active' : ''}`}
+                            onClick={() => setMainTab('dashboard')}
+                        >
+                            📊 Dashboard
+                        </button>
+                        <button
+                            className={`mode-toggle__btn ${mainTab === 'data' ? 'mode-toggle__btn--active' : ''}`}
+                            onClick={() => setMainTab('data')}
+                        >
+                            🗂 Data
+                        </button>
+                    </div>
                     {/* kWh / tCO₂ toggle */}
                     <div className="mode-toggle">
                         <button
@@ -134,49 +152,64 @@ export default function App() {
 
             {/* Main Content */}
             <main className="app-main">
-                {/* KPI Cards */}
-                <section className="dashboard-section">
-                    <KpiCards historical={historical} forecast={forecast} cagr={cagr} horizon={horizon} loading={loading} mode={mode} />
-                </section>
+                {mainTab === 'dashboard' && (
+                    <>
+                        {/* KPI Cards */}
+                        <section className="dashboard-section">
+                            <KpiCards historical={historical} forecast={forecast} cagr={cagr} horizon={horizon} loading={loading} mode={mode} />
+                        </section>
 
-                {/* CAGR Panel */}
-                <section className="dashboard-section">
-                    <CagrPanel cagr={cagr} horizon={horizon} onRun={handleRunForecast} running={running} />
-                </section>
+                        {/* CAGR Panel */}
+                        <section className="dashboard-section">
+                            <CagrPanel cagr={cagr} horizon={horizon} onRun={handleRunForecast} running={running} />
+                        </section>
 
-                {/* Chart Tabs */}
-                <section className="dashboard-section">
-                    <div className="tab-bar">
-                        <button className={`tab-btn ${activeTab === 'combined' ? 'tab-btn--active' : ''}`} onClick={() => setActiveTab('combined')}>
-                            📊 Combined Timeline
-                        </button>
-                        <button className={`tab-btn ${activeTab === 'historical' ? 'tab-btn--active' : ''}`} onClick={() => setActiveTab('historical')}>
-                            ⚡ Historical
-                        </button>
-                        <button className={`tab-btn ${activeTab === 'forecast' ? 'tab-btn--active' : ''}`} onClick={() => setActiveTab('forecast')}>
-                            🔮 Forecast
-                        </button>
-                    </div>
+                        {/* Chart Tabs */}
+                        <section className="dashboard-section">
+                            <div className="tab-bar">
+                                <button className={`tab-btn ${activeTab === 'combined' ? 'tab-btn--active' : ''}`} onClick={() => setActiveTab('combined')}>
+                                    📊 Combined Timeline
+                                </button>
+                                <button className={`tab-btn ${activeTab === 'historical' ? 'tab-btn--active' : ''}`} onClick={() => setActiveTab('historical')}>
+                                    ⚡ Historical
+                                </button>
+                                <button className={`tab-btn ${activeTab === 'forecast' ? 'tab-btn--active' : ''}`} onClick={() => setActiveTab('forecast')}>
+                                    🔮 Forecast
+                                </button>
+                            </div>
 
-                    {activeTab === 'combined' && <CombinedChart historical={historical} forecast={forecast} loading={loading} mode={mode} />}
-                    {activeTab === 'historical' && <RevenueChart data={historical} loading={loading} mode={mode} />}
-                    {activeTab === 'forecast' && <ForecastChart data={forecast} loading={loading || !forecast} mode={mode} />}
-                </section>
+                            {activeTab === 'combined' && <CombinedChart historical={historical} forecast={forecast} loading={loading} mode={mode} />}
+                            {activeTab === 'historical' && <RevenueChart data={historical} loading={loading} mode={mode} />}
+                            {activeTab === 'forecast' && <ForecastChart data={forecast} loading={loading || !forecast} mode={mode} />}
+                        </section>
 
-                {/* Pie Chart */}
-                <section className="dashboard-section">
-                    <CategoryPieChart historical={historical} loading={loading} mode={mode} />
-                </section>
+                        {/* Pie Chart */}
+                        <section className="dashboard-section">
+                            <CategoryPieChart historical={historical} loading={loading} mode={mode} />
+                        </section>
 
-                {/* Data Table — full width, above bar charts */}
-                <section className="dashboard-section">
-                    <DataTable data={forecast} loading={loading} mode={mode} />
-                </section>
+                        {/* Data Table — full width, above bar charts */}
+                        <section className="dashboard-section">
+                            <DataTable data={forecast} loading={loading} mode={mode} />
+                        </section>
 
-                {/* Bar Chart — below table */}
-                <section className="dashboard-section">
-                    <CategoryBreakdown historical={historical} loading={loading} mode={mode} />
-                </section>
+                        {/* Bar Chart — below table */}
+                        <section className="dashboard-section">
+                            <CategoryBreakdown historical={historical} loading={loading} mode={mode} />
+                        </section>
+                    </>
+                )}
+
+                {mainTab === 'data' && (
+                    <>
+                        <section className="dashboard-section">
+                            <DataUpload onRefresh={fetchAll} addToast={addToast} />
+                        </section>
+                        <section className="dashboard-section">
+                            <AuditLogTable addToast={addToast} />
+                        </section>
+                    </>
+                )}
             </main>
         </div>
     );

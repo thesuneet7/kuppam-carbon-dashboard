@@ -54,7 +54,15 @@ def stl_holt_trend_forecast(trend: pd.Series, ForecastHorizon, period: int = 12,
 def Forecasting_Func(Target,climate,Train,ForecastHorizon,Traindate,cgr):
     
     
-    tr_Ind = int(np.where(climate['DateTime']==Traindate)[0])
+    climate['DateTime'] = pd.to_datetime(climate['DateTime'], dayfirst=True)
+    Traindate = pd.to_datetime(Traindate, dayfirst=True)
+
+    tr_Ind = climate.index[climate['DateTime'] == Traindate]
+
+    if len(tr_Ind) == 0:
+        raise ValueError(f"{Traindate} not found")
+
+    tr_Ind = tr_Ind[0]
    
         
     act_tr_Ind = tr_Ind

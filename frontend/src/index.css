@@ -1216,3 +1216,51 @@ body {
   color: var(--text-muted);
   font-size: 0.9rem;
 }
+
+/* ---------- Scope-1 Dashboard ---------- */
+.scope1-hero-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .scope1-hero-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .scope1-hero-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.scope1-two-col {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .scope1-two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.scope1-stat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.scope1-stat-row:hover {
+  background: rgba(22, 163, 74, 0.06);
+}
+
+.kpi-card--green::before {
+  background: #22c55e;
+}

@@ -10,6 +10,7 @@ import CagrPanel from './components/CagrPanel';
 import DataTable from './components/DataTable';
 import DataUpload from './components/DataUpload';
 import AuditLogTable from './components/AuditLogTable';
+import Scope1Dashboard from './components/Scope1Dashboard';
 
 function Toast({ toasts }) {
     return (
@@ -33,7 +34,7 @@ export default function App() {
     const [status, setStatus] = useState('connected');
     const [toasts, setToasts] = useState([]);
     const [activeTab, setActiveTab] = useState('combined');
-    const [mainTab, setMainTab] = useState('dashboard'); // 'dashboard' | 'data'
+    const [mainTab, setMainTab] = useState('dashboard'); // 'dashboard' | 'data' | 'scope1'
     const [mode, setMode] = useState('kwh'); // 'kwh' | 'tco2'
 
     const addToast = useCallback((message, type = 'info') => {
@@ -127,6 +128,12 @@ export default function App() {
                         >
                             🗂 Data
                         </button>
+                        <button
+                            className={`mode-toggle__btn ${mainTab === 'scope1' ? 'mode-toggle__btn--active' : ''}`}
+                            onClick={() => setMainTab('scope1')}
+                        >
+                            🏭 Scope-1
+                        </button>
                     </div>
                     {/* kWh / tCO₂ toggle */}
                     <div className="mode-toggle">
@@ -209,6 +216,10 @@ export default function App() {
                             <AuditLogTable addToast={addToast} />
                         </section>
                     </>
+                )}
+
+                {mainTab === 'scope1' && (
+                    <Scope1Dashboard />
                 )}
             </main>
         </div>

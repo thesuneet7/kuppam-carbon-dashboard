@@ -10,7 +10,8 @@ import CagrPanel from './components/CagrPanel';
 import DataTable from './components/DataTable';
 import DataUpload from './components/DataUpload';
 import AuditLogTable from './components/AuditLogTable';
-import Scope1Dashboard from './components/Scope1Dashboard';
+import HomeDashboard from './components/HomeDashboard';
+import Scope1Sources from './components/Scope1Sources';
 
 function Toast({ toasts }) {
     return (
@@ -34,7 +35,7 @@ export default function App() {
     const [status, setStatus] = useState('connected');
     const [toasts, setToasts] = useState([]);
     const [activeTab, setActiveTab] = useState('combined');
-    const [mainTab, setMainTab] = useState('dashboard'); // 'dashboard' | 'data' | 'scope1'
+    const [mainTab, setMainTab] = useState('home'); // 'home' | 'scope1' | 'scope2' | 'scope3' | 'data'
     const [mode, setMode] = useState('kwh'); // 'kwh' | 'tco2'
 
     const addToast = useCallback((message, type = 'info') => {
@@ -117,22 +118,34 @@ export default function App() {
                     {/* Main nav tabs */}
                     <div className="mode-toggle">
                         <button
-                            className={`mode-toggle__btn ${mainTab === 'dashboard' ? 'mode-toggle__btn--active' : ''}`}
-                            onClick={() => setMainTab('dashboard')}
+                            className={`mode-toggle__btn ${mainTab === 'home' ? 'mode-toggle__btn--active' : ''}`}
+                            onClick={() => setMainTab('home')}
                         >
-                            📊 Dashboard
-                        </button>
-                        <button
-                            className={`mode-toggle__btn ${mainTab === 'data' ? 'mode-toggle__btn--active' : ''}`}
-                            onClick={() => setMainTab('data')}
-                        >
-                            🗂 Data
+                            🏠 Home
                         </button>
                         <button
                             className={`mode-toggle__btn ${mainTab === 'scope1' ? 'mode-toggle__btn--active' : ''}`}
                             onClick={() => setMainTab('scope1')}
                         >
                             🏭 Scope-1
+                        </button>
+                        <button
+                            className={`mode-toggle__btn ${mainTab === 'scope2' ? 'mode-toggle__btn--active' : ''}`}
+                            onClick={() => setMainTab('scope2')}
+                        >
+                            📊 Scope-2
+                        </button>
+                        <button
+                            className={`mode-toggle__btn ${mainTab === 'scope3' ? 'mode-toggle__btn--active' : ''}`}
+                            onClick={() => setMainTab('scope3')}
+                        >
+                            🔗 Scope-3
+                        </button>
+                        <button
+                            className={`mode-toggle__btn ${mainTab === 'data' ? 'mode-toggle__btn--active' : ''}`}
+                            onClick={() => setMainTab('data')}
+                        >
+                            🗂 Data
                         </button>
                     </div>
                     {/* kWh / tCO₂ toggle */}
@@ -159,7 +172,15 @@ export default function App() {
 
             {/* Main Content */}
             <main className="app-main">
-                {mainTab === 'dashboard' && (
+                {mainTab === 'home' && (
+                    <HomeDashboard />
+                )}
+
+                {mainTab === 'scope1' && (
+                    <Scope1Sources />
+                )}
+
+                {mainTab === 'scope2' && (
                     <>
                         {/* KPI Cards */}
                         <section className="dashboard-section">
@@ -207,6 +228,18 @@ export default function App() {
                     </>
                 )}
 
+                {mainTab === 'scope3' && (
+                    <section className="dashboard-section">
+                        <div className="glass-card stagger-1" style={{ textAlign: 'center', padding: '60px 24px' }}>
+                            <div style={{ fontSize: '3rem', marginBottom: 16 }}>🔗</div>
+                            <div className="chart-title" style={{ marginBottom: 8 }}>Scope-3 Emissions</div>
+                            <div className="chart-subtitle">
+                                Other indirect emissions — Coming Soon
+                            </div>
+                        </div>
+                    </section>
+                )}
+
                 {mainTab === 'data' && (
                     <>
                         <section className="dashboard-section">
@@ -216,10 +249,6 @@ export default function App() {
                             <AuditLogTable addToast={addToast} />
                         </section>
                     </>
-                )}
-
-                {mainTab === 'scope1' && (
-                    <Scope1Dashboard />
                 )}
             </main>
         </div>

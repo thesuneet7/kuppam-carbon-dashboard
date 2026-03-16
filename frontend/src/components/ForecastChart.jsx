@@ -1,8 +1,14 @@
 import React from 'react';
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import { CATEGORIES, formatNumber, formatDate, catKey, totalKey, unitLabel } from '../utils';
+
+/* Agriculture + Total dominate the chart; plot them on the left axis
+   and all other (smaller) categories on a right axis. */
+const AGRICULTURE_KEY = 'agriculture';
+const SMALL_CATS = CATEGORIES.filter((c) => c.key !== AGRICULTURE_KEY);
+const AGRI_CAT = CATEGORIES.find((c) => c.key === AGRICULTURE_KEY);
 
 function CustomTooltip({ active, payload, label, unit }) {
     if (!active || !payload) return null;
@@ -61,16 +67,73 @@ export default function ForecastChart({ data, loading, mode }) {
             </div>
             <div className="chart-container">
                 <ResponsiveContainer width="100%" height={350}>
-                    <LineChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                    <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
                         <XAxis dataKey="date" tickFormatter={formatDate} stroke="rgba(0,0,0,0.1)" tick={{ fill: '#4a6a4a', fontSize: 11 }} interval={5} />
-                        <YAxis tickFormatter={(v) => formatNumber(v, true)} stroke="rgba(0,0,0,0.1)" tick={{ fill: '#4a6a4a', fontSize: 11 }} width={60} label={{ value: unit, angle: -90, position: 'insideLeft', fill: '#4a6a4a', fontSize: 11 }} />
+
+                        {/* Left axis — Agriculture + Total (large scale) */}
+                        <YAxis
+                            yAxisId="left"
+                            tickFormatter={(v) => formatNumber(v, true)}
+                            stroke="rgba(0,0,0,0.1)"
+                            tick={{ fill: AGRI_CAT.color, fontSize: 11 }}
+                            width={60}
+                            label={{ value: `Agri + Total (${unit})`, angle: -90, position: 'insideLeft', fill: AGRI_CAT.color, fontSize: 10, dx: -5 }}
+                        />
+
+                        {/* Right axis — Smaller categories */}
+                        <YAxis
+                            yAxisId="right"
+                            orientation="right"
+                            tickFormatter={(v) => formatNumber(v, true)}
+                            stroke="rgba(0,0,0,0.1)"
+                            tick={{ fill: '#4a6a4a', fontSize: 11 }}
+                            width={60}
+                            label={{ value: `Others (${unit})`, angle: 90, position: 'insideRight', fill: '#4a6a4a', fontSize: 10, dx: 5 }}
+                        />
+
                         <Tooltip content={<CustomTooltip unit={unit} />} />
-                        {CATEGORIES.map((c) => (
-                            <Line key={c.key} type="monotone" dataKey={c.key} name={c.label} stroke={c.color} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
+
+                        {/* Agriculture on left axis */}
+                        <Line
+                            yAxisId="left"
+                            type="monotone"
+                            dataKey={AGRICULTURE_KEY}
+                            name={AGRI_CAT.label}
+                            stroke={AGRI_CAT.color}
+                            strokeWidth={2}
+                            dot={false}
+                            activeDot={{ r: 4, strokeWidth: 0 }}
+                        />
+
+                        {/* Total on left axis */}
+                        <Line
+                            yAxisId="left"
+                            type="monotone"
+                            dataKey="total"
+                            name={totalLabel}
+                            stroke="#1a2e1a"
+                            strokeWidth={2.5}
+                            strokeDasharray="6 3"
+                            dot={false}
+                            activeDot={{ r: 4, strokeWidth: 0 }}
+                        />
+
+                        {/* Other categories on right axis */}
+                        {SMALL_CATS.map((c) => (
+                            <Line
+                                key={c.key}
+                                yAxisId="right"
+                                type="monotone"
+                                dataKey={c.key}
+                                name={c.label}
+                                stroke={c.color}
+                                strokeWidth={2}
+                                dot={false}
+                                activeDot={{ r: 4, strokeWidth: 0 }}
+                            />
                         ))}
-                        <Line type="monotone" dataKey="total" name={totalLabel} stroke="#1a2e1a" strokeWidth={2.5} strokeDasharray="6 3" dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
-                    </LineChart>
+                    </ComposedChart>
                 </ResponsiveContainer>
             </div>
             <div className="chart-legend">
@@ -78,11 +141,15 @@ export default function ForecastChart({ data, loading, mode }) {
                     <div key={c.key} className="chart-legend__item">
                         <span className="chart-legend__dot" style={{ background: c.color }} />
                         {c.label}
+                        {c.key === AGRICULTURE_KEY ? ' (left axis)' : ''}
                     </div>
                 ))}
                 <div className="chart-legend__item">
                     <span className="chart-legend__dot" style={{ background: '#1a2e1a' }} />
-                    {totalLabel}
+                    {totalLabel} (left axis)
+                </div>
+                <div className="chart-legend__item" style={{ fontSize: '0.7rem', color: '#7a9a7a', fontStyle: 'italic' }}>
+                    ↕ Dual-axis scale
                 </div>
             </div>
         </div>

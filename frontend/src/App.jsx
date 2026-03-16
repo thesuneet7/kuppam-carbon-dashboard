@@ -147,7 +147,7 @@ export default function App() {
                             className={`mode-toggle__btn ${mainTab === 'data' ? 'mode-toggle__btn--active' : ''}`}
                             onClick={() => setMainTab('data')}
                         >
-                            🗂 Data
+                            🗂 Data Management
                         </button>
                     </div>
                     {/* kWh / tCO₂ toggle */}

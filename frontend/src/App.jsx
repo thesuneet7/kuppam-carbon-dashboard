@@ -12,6 +12,7 @@ import DataUpload from './components/DataUpload';
 import AuditLogTable from './components/AuditLogTable';
 import HomeDashboard from './components/HomeDashboard';
 import Scope1Sources from './components/Scope1Sources';
+import Scope2Sources from './components/Scope2Sources';
 
 function Toast({ toasts }) {
     return (
@@ -182,6 +183,9 @@ export default function App() {
 
                 {mainTab === 'scope2' && (
                     <>
+                        {/* Scope-2 Emission Sources FY25-26 */}
+                        <Scope2Sources />
+
                         {/* KPI Cards */}
                         <section className="dashboard-section">
                             <KpiCards historical={historical} forecast={forecast} cagr={cagr} horizon={horizon} loading={loading} mode={mode} />

@@ -13,6 +13,7 @@ import AuditLogTable from './components/AuditLogTable';
 import HomeDashboard from './components/HomeDashboard';
 import Scope1Sources from './components/Scope1Sources';
 import Scope2Sources from './components/Scope2Sources';
+import Scope3Sources from './components/Scope3Sources';
 
 function Toast({ toasts }) {
     return (
@@ -186,6 +187,16 @@ export default function App() {
                         {/* Scope-2 Emission Sources FY25-26 */}
                         <Scope2Sources />
 
+                        {/* DeepDive Heading */}
+                        <section className="dashboard-section">
+                            <div className="chart-header">
+                                <div>
+                                    <div className="chart-title" style={{ fontSize: '1.25rem' }}>📈 Scope-2 DeepDive (Past 10 Yrs &amp; Forecast)</div>
+                                    <div className="chart-subtitle">Historical trends, forecasting, and category-wise analysis</div>
+                                </div>
+                            </div>
+                        </section>
+
                         {/* KPI Cards */}
                         <section className="dashboard-section">
                             <KpiCards historical={historical} forecast={forecast} cagr={cagr} horizon={horizon} loading={loading} mode={mode} />
@@ -233,15 +244,7 @@ export default function App() {
                 )}
 
                 {mainTab === 'scope3' && (
-                    <section className="dashboard-section">
-                        <div className="glass-card stagger-1" style={{ textAlign: 'center', padding: '60px 24px' }}>
-                            <div style={{ fontSize: '3rem', marginBottom: 16 }}>🔗</div>
-                            <div className="chart-title" style={{ marginBottom: 8 }}>Scope-3 Emissions</div>
-                            <div className="chart-subtitle">
-                                Other indirect emissions — Coming Soon
-                            </div>
-                        </div>
-                    </section>
+                    <Scope3Sources />
                 )}
 
                 {mainTab === 'data' && (

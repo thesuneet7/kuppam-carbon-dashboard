@@ -1,10 +1,10 @@
 import React from 'react';
 
 export const CATEGORIES = [
-    { key: 'residential', label: 'Residential', color: '#16a34a' },
-    { key: 'commercial', label: 'Commercial', color: '#0d9488' },
-    { key: 'industrial', label: 'Industrial', color: '#0891b2' },
-    { key: 'agriculture', label: 'Agriculture', color: '#65a30d' },
+    { key: 'residential', label: 'Residential', color: '#2563eb' },
+    { key: 'commercial', label: 'Commercial', color: '#f59e0b' },
+    { key: 'industrial', label: 'Industrial', color: '#10b981' },
+    { key: 'agriculture', label: 'Agriculture', color: '#ef4444' },
     { key: 'others', label: 'Others', color: '#8b5cf6' },
 ];
 

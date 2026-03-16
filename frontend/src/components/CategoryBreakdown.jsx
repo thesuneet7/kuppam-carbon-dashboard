@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
 import { CATEGORIES, formatNumber, catKey, unitLabel } from '../utils';
 
@@ -50,10 +50,14 @@ export default function CategoryBreakdown({ historical, loading, mode }) {
     });
     const chartData = Object.values(fyMap);
 
+    // Separate agriculture from others for dual-axis
+    const agriCat = CATEGORIES.find((c) => c.key === 'agriculture');
+    const otherCats = CATEGORIES.filter((c) => c.key !== 'agriculture');
+
     const title = mode === 'tco2' ? 'tCO₂ Emissions by Category & FY' : 'Consumed kWh by Category & FY';
     const subtitle = mode === 'tco2'
-        ? 'Stacked annual breakdown of CO₂ emissions per consumer category'
-        : 'Stacked annual breakdown of energy consumed per consumer category';
+        ? 'Agriculture on left axis, other categories stacked on right axis'
+        : 'Agriculture on left axis, other categories stacked on right axis';
 
     return (
         <div className="glass-card stagger-5">
@@ -64,14 +68,55 @@ export default function CategoryBreakdown({ historical, loading, mode }) {
                 </div>
             </div>
             <div className="chart-container chart-container--sm">
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={340}>
                     <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
                         <XAxis dataKey="fy" stroke="rgba(0,0,0,0.1)" tick={{ fill: '#4a6a4a', fontSize: 11 }} />
-                        <YAxis tickFormatter={(v) => formatNumber(v, true)} stroke="rgba(0,0,0,0.1)" tick={{ fill: '#4a6a4a', fontSize: 11 }} width={60} label={{ value: unit, angle: -90, position: 'insideLeft', fill: '#4a6a4a', fontSize: 11 }} />
+
+                        {/* Left axis — Agriculture (large scale) */}
+                        <YAxis
+                            yAxisId="left"
+                            tickFormatter={(v) => formatNumber(v, true)}
+                            stroke="rgba(0,0,0,0.1)"
+                            tick={{ fill: agriCat.color, fontSize: 11 }}
+                            width={65}
+                            label={{ value: `Agriculture (${unit})`, angle: -90, position: 'insideLeft', fill: agriCat.color, fontSize: 10, offset: 4 }}
+                        />
+
+                        {/* Right axis — Others (smaller scale) */}
+                        <YAxis
+                            yAxisId="right"
+                            orientation="right"
+                            tickFormatter={(v) => formatNumber(v, true)}
+                            stroke="rgba(0,0,0,0.1)"
+                            tick={{ fill: '#4a6a4a', fontSize: 11 }}
+                            width={65}
+                            label={{ value: `Others (${unit})`, angle: 90, position: 'insideRight', fill: '#4a6a4a', fontSize: 10, offset: 4 }}
+                        />
+
                         <Tooltip content={<CustomTooltip unit={unit} />} />
-                        {CATEGORIES.map((c) => (
-                            <Bar key={c.key} dataKey={c.key} name={c.label} stackId="a" fill={c.color} radius={c.key === 'others' ? [4, 4, 0, 0] : [0, 0, 0, 0]} />
+
+                        {/* Agriculture bar — left axis */}
+                        <Bar
+                            yAxisId="left"
+                            dataKey={agriCat.key}
+                            name={agriCat.label}
+                            fill={agriCat.color}
+                            radius={[4, 4, 0, 0]}
+                            barSize={28}
+                        />
+
+                        {/* Other categories stacked — right axis */}
+                        {otherCats.map((c, idx) => (
+                            <Bar
+                                key={c.key}
+                                yAxisId="right"
+                                dataKey={c.key}
+                                name={c.label}
+                                stackId="others"
+                                fill={c.color}
+                                radius={idx === otherCats.length - 1 ? [4, 4, 0, 0] : [0, 0, 0, 0]}
+                            />
                         ))}
                     </BarChart>
                 </ResponsiveContainer>

@@ -7,20 +7,20 @@ import { formatNumber } from '../utils';
 
 /* ── Static Data ── */
 const ELECTRICITY_SOURCES = [
-    { name: 'Residential', value: 33561, color: '#0891b2' },
-    { name: 'Commercial', value: 9321, color: '#0ea5e9' },
-    { name: 'Industrial and Construction', value: 23905, color: '#06b6d4' },
-    { name: 'Agriculture and allied', value: 209878, color: '#0d9488' },
-    { name: 'General utilities', value: 15190, color: '#6366f1' },
+    { name: 'Residential', value: 33561, color: '#2563eb' },
+    { name: 'Commercial', value: 9321, color: '#f59e0b' },
+    { name: 'Industrial and Construction', value: 23905, color: '#10b981' },
+    { name: 'Agriculture and allied', value: 209878, color: '#ef4444' },
+    { name: 'General utilities', value: 15190, color: '#8b5cf6' },
 ];
 const ELECTRICITY_TOTAL = 291855;
 
 const EV_SOURCES = [
-    { name: '2W', value: 249.12, color: '#8b5cf6' },
-    { name: '3W', value: 102.96, color: '#a78bfa' },
-    { name: '4W', value: 156.24, color: '#7c3aed' },
-    { name: 'Bus', value: 37.44, color: '#6d28d9' },
-    { name: 'Goods Vehicles', value: 15.12, color: '#5b21b6' },
+    { name: '2W', value: 249.12, color: '#f97316' },
+    { name: '3W', value: 102.96, color: '#0891b2' },
+    { name: '4W', value: 156.24, color: '#ec4899' },
+    { name: 'Bus', value: 37.44, color: '#2563eb' },
+    { name: 'Goods Vehicles', value: 15.12, color: '#10b981' },
 ];
 const EV_TOTAL = 560.88;
 
@@ -109,7 +109,7 @@ function SourcePanel({ title, subtitle, data, total, barHeight }) {
 }
 
 /* ================================================================
-   Scope-2 Emission Sources FY25-26
+   Scope-2 Emission Sources FY24-25
    Two bar charts: Usage Electricity + Electric Vehicles
    ================================================================ */
 export default function Scope2Sources() {
@@ -117,7 +117,7 @@ export default function Scope2Sources() {
         <section className="dashboard-section">
             <div className="chart-header" style={{ marginBottom: 8 }}>
                 <div>
-                    <div className="chart-title">⚡ Scope-2 Emission Sources FY25-26</div>
+                    <div className="chart-title">⚡ Scope-2 Emission Sources FY24-25</div>
                     <div className="chart-subtitle">
                         Indirect emissions from purchased electricity and electric vehicles (tCO₂e)
                     </div>

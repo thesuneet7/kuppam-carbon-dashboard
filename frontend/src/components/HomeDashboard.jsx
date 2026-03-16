@@ -6,18 +6,18 @@ import { formatNumber } from '../utils';
 
 /* ── Static Data ── */
 const SCOPE_OVERVIEW = [
-    { name: 'Scope 1', value: 647904, share: 61, color: '#16a34a' },
-    { name: 'Scope 2', value: 291855, share: 28, color: '#0891b2' },
-    { name: 'Scope 3', value: 114211, share: 11, color: '#8b5cf6' },
+    { name: 'Scope 1', value: 647904, share: 61, color: '#ef4444' },
+    { name: 'Scope 2', value: 291855, share: 28, color: '#2563eb' },
+    { name: 'Scope 3', value: 114211, share: 11, color: '#f59e0b' },
 ];
 const SCOPE_TOTAL = 1053970;
 
 const SECTOR_DATA = [
-    { name: 'Stationary Energy', value: 739834, share: 70, color: '#16a34a' },
-    { name: 'Transportation', value: 206454, share: 20, color: '#059669' },
-    { name: 'IPPU', value: 87449, share: 8, color: '#0891b2' },
-    { name: 'Waste', value: 18296, share: 2, color: '#6366f1' },
-    { name: 'AFOLU', value: 1937, share: 0.18, color: '#8b5cf6' },
+    { name: 'Stationary Energy', value: 739834, share: 70, color: '#10b981' },
+    { name: 'Transportation', value: 206454, share: 20, color: '#2563eb' },
+    { name: 'IPPU', value: 87449, share: 8, color: '#f97316' },
+    { name: 'Waste', value: 18296, share: 2, color: '#8b5cf6' },
+    { name: 'AFOLU', value: 1937, share: 0.18, color: '#f59e0b' },
 ];
 
 const RADIAN = Math.PI / 180;

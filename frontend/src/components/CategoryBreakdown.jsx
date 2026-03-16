@@ -68,8 +68,8 @@ export default function CategoryBreakdown({ historical, loading, mode }) {
                 </div>
             </div>
             <div className="chart-container chart-container--sm">
-                <ResponsiveContainer width="100%" height={340}>
-                    <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <ResponsiveContainer width="100%" height={380}>
+                    <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }} barGap={8} barCategoryGap="20%">
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
                         <XAxis dataKey="fy" stroke="rgba(0,0,0,0.1)" tick={{ fill: '#4a6a4a', fontSize: 11 }} />
 
@@ -77,7 +77,7 @@ export default function CategoryBreakdown({ historical, loading, mode }) {
                         <YAxis
                             yAxisId="left"
                             tickFormatter={(v) => formatNumber(v, true)}
-                            stroke="rgba(0,0,0,0.1)"
+                            stroke={agriCat.color}
                             tick={{ fill: agriCat.color, fontSize: 11 }}
                             width={65}
                             label={{ value: `Agriculture (${unit})`, angle: -90, position: 'insideLeft', fill: agriCat.color, fontSize: 10, offset: 4 }}
@@ -88,7 +88,7 @@ export default function CategoryBreakdown({ historical, loading, mode }) {
                             yAxisId="right"
                             orientation="right"
                             tickFormatter={(v) => formatNumber(v, true)}
-                            stroke="rgba(0,0,0,0.1)"
+                            stroke="#2563eb"
                             tick={{ fill: '#4a6a4a', fontSize: 11 }}
                             width={65}
                             label={{ value: `Others (${unit})`, angle: 90, position: 'insideRight', fill: '#4a6a4a', fontSize: 10, offset: 4 }}
@@ -103,7 +103,6 @@ export default function CategoryBreakdown({ historical, loading, mode }) {
                             name={agriCat.label}
                             fill={agriCat.color}
                             radius={[4, 4, 0, 0]}
-                            barSize={28}
                         />
 
                         {/* Other categories stacked — right axis */}
